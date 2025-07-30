@@ -26,33 +26,34 @@
       min-height: 100vh;
     }
 
-    /* Grand Opening Banner */
-    #top-banner {
-      background: url('bustanut.jpg') no-repeat center center;
-      background-size: cover;
-      color: #fff;
-      text-align: center;
-      padding: 12px 0;
-      font-weight: 600;
-      font-size: 1.1rem;
-      text-shadow: 0 1px 3px rgba(0, 0, 0, 0.7);
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
-      z-index: 1000;
-    }
-
-    /* Header & Navigation */
+    /* Header & Navigation (now also banner) */
     header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 15px 20px;
-      background-color: rgba(0, 0, 0, 0.6);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+      padding: 12px 20px;
+      background-color: #00bfff;
     }
     .logo {
-      font-size: 1.5rem;
+      display: flex;
+      align-items: center;
       font-weight: 700;
       letter-spacing: 1px;
+    }
+    .logo img {
+      height: 40px;
+      margin-right: 8px;
+    }
+    .logo span {
+      font-size: 1.5rem;
+    }
+    .banner-text {
+      color: #fff;
+      font-weight: 600;
+      font-size: 1.1rem;
+      text-shadow: 0 1px 3px rgba(0, 0, 0, 0.7);
+      flex: 1;
+      text-align: center;
     }
     .menu-button {
       font-size: 1.5rem;
@@ -135,12 +136,20 @@
   </style>
 </head>
 <body>
-  <div id="top-banner">
-    Welcome to the Grand Opening of BustAnEar!
-  </div>
 
   <header>
-    <div class="logo">[logo] BustAnEar</div>
+    <!-- Logo -->
+    <div class="logo">
+      <img src="bustaball.jpg" alt="BustAnEar LLC Logo" />
+      <span>BustAnEar LLC</span>
+    </div>
+
+    <!-- Banner Text -->
+    <div class="banner-text">
+      Welcome to the Grand Opening of BustAnEar!
+    </div>
+
+    <!-- Hamburger Menu -->
     <div class="menu-button" onclick="toggleMenu()">☰</div>
   </header>
 
@@ -175,5 +184,6 @@
       menu.style.display = menu.style.display === 'flex' ? 'none' : 'flex';
     }
   </script>
+
 </body>
 </html>
