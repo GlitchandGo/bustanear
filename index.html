@@ -26,7 +26,7 @@
       min-height: 100vh;
     }
 
-    /* Header & Navigation (now also banner) */
+    /* Header & Navigation with Banner */
     header {
       display: flex;
       justify-content: space-between;
@@ -35,17 +35,14 @@
       background-color: #00bfff;
     }
     .logo {
-      display: flex;
-      align-items: center;
+      display: inline-block;
+      background-color: #d10000;
+      padding: 6px 12px;
+      border-radius: 4px;
       font-weight: 700;
       letter-spacing: 1px;
-    }
-    .logo img {
-      height: 40px;
-      margin-right: 8px;
-    }
-    .logo span {
       font-size: 1.5rem;
+      color: #fff;
     }
     .banner-text {
       color: #fff;
@@ -138,18 +135,8 @@
 <body>
 
   <header>
-    <!-- Logo -->
-    <div class="logo">
-      <img src="bustaball.jpg" alt="BustAnEar LLC Logo" />
-      <span>BustAnEar LLC</span>
-    </div>
-
-    <!-- Banner Text -->
-    <div class="banner-text">
-      Welcome to the Grand Opening of BustAnEar!
-    </div>
-
-    <!-- Hamburger Menu -->
+    <div class="logo">BustAnEar LLC</div>
+    <div class="banner-text">Welcome to the Grand Opening of BustAnEar!</div>
     <div class="menu-button" onclick="toggleMenu()">☰</div>
   </header>
 
