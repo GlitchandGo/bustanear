@@ -2,176 +2,139 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>BustAnEar LLC</title>
-  <!-- Google Font -->
-  <link
-    href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap"
-    rel="stylesheet"
-  />
   <style>
-    /* Reset & Base */
+    /* Reset & base */
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
     }
-    body {
-      font-family: 'Poppins', sans-serif;
-      color: #fff;
-      background: url('bustanear.jpg') no-repeat center center fixed;
-      background-size: cover;
-      display: flex;
-      flex-direction: column;
-      min-height: 100vh;
+    html, body {
+      height: 100%;
+      font-family: sans-serif;
     }
 
-    /* Header & Navigation with Banner */
-    header {
+    /* Top blue banner */
+    .top-banner {
+      background-color: #007BFF;
+      color: #fff;
+      text-align: center;
+      padding: 0.75rem 1rem;
+      font-size: 1rem;
+      font-weight: 500;
+    }
+
+    /* Red header bar */
+    .main-header {
+      background-color: #FF0000;
+      color: #fff;
       display: flex;
+      align-items: center;
       justify-content: space-between;
-      align-items: center;
-      padding: 12px 20px;
-      background-color: #00bfff;
+      padding: 0.75rem 1rem;
     }
-    .logo {
-      background-color: #d10000;
-      padding: 6px 12px;
-      border-radius: 4px;
-      font-weight: 700;
-      letter-spacing: 1px;
-      font-size: 1.5rem;
-      color: #fff;
+    .main-header .logo {
+      font-size: 1.25rem;
+      font-weight: bold;
     }
-    .banner-text {
-      flex: 1;
-      text-align: center;
-      color: #fff;
-      font-weight: 600;
-      font-size: 1.1rem;
-      text-shadow: 0 1px 3px rgba(0, 0, 0, 0.7);
-    }
-    .menu-button {
-      font-size: 1.5rem;
+    .main-header .menu-icon {
+      width: 24px;
+      height: 24px;
       cursor: pointer;
-      transition: color 0.2s;
-    }
-    .menu-button:hover {
-      color: #00f2ff;
+      /* placeholder styling for the hamburger */
+      background: url('menu-icon.svg') center/contain no-repeat;
     }
 
-    /* Dropdown Menu */
-    .menu {
-      position: absolute;
-      top: 60px;
-      right: 20px;
-      background-color: rgba(0, 0, 0, 0.85);
-      border: 1px solid #444;
-      border-radius: 6px;
-      padding: 10px 0;
-      display: none;
-      flex-direction: column;
-      min-width: 160px;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
-      z-index: 999;
-    }
-    .menu a {
-      color: #fff;
-      text-decoration: none;
-      padding: 10px 20px;
-      transition: background 0.2s, color 0.2s;
-    }
-    .menu a:hover {
-      background-color: rgba(0, 242, 255, 0.1);
-      color: #00f2ff;
-    }
-
-    /* Main Content Layout */
+    /* Full‐screen background */
     main {
-      flex: 1;
+      position: relative;
+      height: calc(100vh - 56px - 56px); /* subtract banner + header heights */
+      background: url('times-square.jpg') center center/cover no-repeat;
+    }
+
+    /* Overlay container for nav + content */
+    .overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      color: #fff;
       display: flex;
       flex-direction: column;
+      justify-content: flex-start;
       align-items: center;
-      padding: 40px 20px;
-    }
-    .home-title {
-      width: 100%;
-      text-align: center;
-      margin-bottom: 20px;
-    }
-    .home-title h1 {
-      font-size: 2.5rem;
-      color: #00f2ff;
-      text-shadow: 0 1px 3px rgba(0, 0, 0, 0.7);
-    }
-    .content-container {
-      background-color: rgba(0, 0, 0, 0.7);
-      padding: 30px 40px;
-      border-radius: 8px;
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.6);
-      max-width: 700px;
-      width: 100%;
-    }
-    .content-container h2 {
-      font-size: 1.5rem;
-      color: #00d8ff;
-      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);
-      margin-bottom: 0.5em;
-    }
-    .content-container p {
-      line-height: 1.6;
-      color: #ddd;
+      padding: 1rem;
+      background: rgba(0,0,0,0.2); /* slight darkening */
     }
 
-    /* Footer */
-    footer {
-      text-align: center;
-      padding: 15px 10px;
-      font-size: 0.85rem;
-      border-top: 1px solid rgba(255, 255, 255, 0.2);
-      background-color: rgba(0, 0, 0, 0.6);
+    /* Main navigation links */
+    .main-nav {
+      display: flex;
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+    .main-nav a {
+      text-decoration: none;
+      padding: 0.5rem 0.75rem;
+      background: rgba(255,255,255,0.85);
+      color: #007BFF;
+      border-radius: 4px;
+      font-weight: 600;
+      font-size: 1rem;
+    }
+
+    /* About Us card */
+    .about-us {
+      background-color: rgba(0,0,0,0.7);
+      margin-top: 2rem;
+      padding: 1rem 1.25rem;
+      border-radius: 8px;
+      width: 100%;
+      max-width: 400px;
+      text-align: left;
+    }
+    .about-us h2 {
+      margin-bottom: 0.5rem;
+      font-size: 1.2rem;
+      color: #fff;
+    }
+    .about-us p {
+      color: #ddd;
+      line-height: 1.4;
+      font-size: 0.9rem;
     }
   </style>
 </head>
 <body>
 
-  <header>
+  <!-- Blue welcome banner -->
+  <div class="top-banner">
+    Welcome to the Grand Opening of BustAnEar!
+  </div>
+
+  <!-- Red top bar with logo + menu icon -->
+  <header class="main-header">
     <div class="logo">BustAnEar LLC</div>
-    <div class="banner-text">Welcome to the Grand Opening of BustAnEar!</div>
-    <div class="menu-button" onclick="toggleMenu()">☰</div>
+    <div class="menu-icon" aria-label="Menu"></div>
   </header>
 
-  <nav class="menu" id="menu">
-    <a href="#">Home</a>
-    <a href="#">About Us</a>
-    <a href="#">Membership</a>
-    <a href="#">Soundboard</a>
-    <a href="#">Pro Soundboard</a>
-    <a href="#">Premium Soundboard</a>
-    <a href="#">Prank Link</a>
-    <a href="#">Contact</a>
-  </nav>
-
+  <!-- Main content with background image -->
   <main>
-    <div class="home-title">
-      <h1>Home</h1>
-    </div>
-    <div class="content-container">
-      <h2>About Us</h2>
-      <p>Text goes here</p>
+    <div class="overlay">
+      <nav class="main-nav">
+        <a href="#">Home</a>
+        <a href="#">About Us</a>
+      </nav>
+
+      <section class="about-us">
+        <h2>About Us</h2>
+        <p>Text goes here.</p>
+      </section>
     </div>
   </main>
-
-  <footer>
-    ©2025 Bust An Ear LLC. Bust An Ear is a trademark of INNOVEXA INC. All rights reserved.
-  </footer>
-
-  <script>
-    function toggleMenu() {
-      const menu = document.getElementById('menu');
-      menu.style.display = menu.style.display === 'flex' ? 'none' : 'flex';
-    }
-  </script>
 
 </body>
 </html>
