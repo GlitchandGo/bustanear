@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Soundboard</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Bubblegum+Sans&display=swap"
+    rel="stylesheet"
+  />
+  <style>
+    /* Animated full-page gradient */
+    @keyframes gradientShift {
+      0%   { background-position:   0% 50%; }
+      50%  { background-position: 100% 50%; }
+      100% { background-position:   0% 50%; }
+    }
+
+    body {
+      margin: 0;
+      padding: 40px 20px;
+      font-family: 'Bubblegum Sans', cursive;
+      background: linear-gradient(
+        270deg,
+        #87ceeb,
+        #1e90ff,
+        #4169e1
+      );
+      background-size: 600% 600%;
+      animation: gradientShift 20s ease infinite;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    /* Frosted-glass panel */
+    .soundboard-container {
+      background: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(12px);
+      border-radius: 20px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+      padding: 40px 20px;
+      max-width: 700px;
+      width: 100%;
+      text-align: center;
+    }
+
+    /* Title with subtle text-shadow */
+    h1 {
+      margin: 0 0 30px;
+      font-size: 3.5rem;
+      color: #ffffff;
+      text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.4);
+    }
+
+    /* Grid layout */
+    .buttons {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+      justify-items: center;
+    }
+
+    /* Glossy 3D buttons */
+    .sound-button {
+      position: relative;
+      width: 70px;
+      height: 70px;
+      background: radial-gradient(circle at 30% 30%, #e74c3c, #c0392b);
+      border: none;
+      border-radius: 50%;
+      color: #fff;
+      font-size: 1rem;
+      cursor: pointer;
+      box-shadow:
+        0 4px #932b26,
+        0 6px 10px rgba(0, 0, 0, 0.3);
+      overflow: hidden;
+      transition: transform 0.1s ease, box-shadow 0.1s ease;
+    }
+
+    /* Press-in effect */
+    .sound-button:active {
+      transform: translateY(4px);
+      box-shadow:
+        0 2px #932b26,
+        0 4px  6px rgba(0, 0, 0, 0.3);
+    }
+
+    /* Gloss highlight swipe */
+    .sound-button::before {
+      content: '';
+      position: absolute;
+      top: -100%;
+      left: -100%;
+      width: 200%;
+      height: 200%;
+      background: rgba(255, 255, 255, 0.25);
+      transform: rotate(45deg) translate(-100%, -100%);
+      transition: transform 0.6s ease;
+    }
+
+    .sound-button:hover::before {
+      transform: rotate(45deg) translate(0, 0);
+    }
+
+    .sound-button:focus {
+      outline: 2px solid rgba(255, 255, 255, 0.7);
+      outline-offset: 4px;
+    }
+  </style>
+</head>
+<body>
+  <div class="soundboard-container">
+    <h1>Soundboard</h1>
+    <div class="buttons">
+      <!-- 16 buttons; just update data-sound -->
+      <button class="sound-button" data-sound="bruh.mp3">bruh</button>
+      <button class="sound-button" data-sound="wtf.mp3">i got no rizz</button>
+      <button class="sound-button" data-sound="soulmate.mp3">wedding piano thing</button>
+      <button class="sound-button" data-sound="br_br_patapim.mp3">brainrot AAAA</button>
+      <button class="sound-button" data-sound="sound5.mp3">5</button>
+      <button class="sound-button" data-sound="sound6.mp3">6</button>
+      <button class="sound-button" data-sound="sound7.mp3">7</button>
+      <button class="sound-button" data-sound="sound8.mp3">8</button>
+      <button class="sound-button" data-sound="sound9.mp3">9</button>
+      <button class="sound-button" data-sound="sound10.mp3">10</button>
+      <button class="sound-button" data-sound="sound11.mp3">11</button>
+      <button class="sound-button" data-sound="sound12.mp3">12</button>
+      <button class="sound-button" data-sound="sound13.mp3">13</button>
+      <button class="sound-button" data-sound="sound14.mp3">14</button>
+      <button class="sound-button" data-sound="sound15.mp3">15</button>
+      <button class="sound-button" data-sound="sound16.mp3">16</button>
+    </div>
+  </div>
+
+  <audio id="player"></audio>
+  <script>
+    const player = document.getElementById('player');
+    document.querySelectorAll('.sound-button').forEach(btn => {
+      btn.addEventListener('click', () => {
+        player.pause();
+        player.currentTime = 0;
+        player.src = btn.dataset.sound;
+        player.play();
+      });
+    });
+  </script>
+</body>
+</html>
