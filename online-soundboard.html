@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -11,11 +12,7 @@
       --button-hover: rgba(255, 255, 255, 0.25);
       --text-color: #ffffff;
     }
-
-    * {
-      box-sizing: border-box;
-    }
-
+    * { box-sizing: border-box; }
     body {
       margin: 0;
       min-height: 100vh;
@@ -26,12 +23,7 @@
       justify-content: center;
       padding: 2rem 1rem;
     }
-
-    .container {
-      width: 100%;
-      max-width: 700px;
-    }
-
+    .container { width: 100%; max-width: 700px; }
     h1, h2 {
       text-align: center;
       text-transform: uppercase;
@@ -39,7 +31,6 @@
       margin-bottom: 1rem;
       text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4);
     }
-
     form, .sound {
       background: var(--glass-bg);
       backdrop-filter: blur(10px);
@@ -49,7 +40,6 @@
       margin-bottom: 1.5rem;
       box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
     }
-
     input[type="text"],
     input[type="file"] {
       width: 100%;
@@ -59,14 +49,9 @@
       border: none;
       border-radius: 8px;
       color: var(--text-color);
-      outline: none;
       font-size: 1rem;
     }
-
-    input::placeholder {
-      color: rgba(255, 255, 255, 0.7);
-    }
-
+    input::placeholder { color: rgba(255, 255, 255, 0.7); }
     button {
       width: 100%;
       padding: 0.75rem;
@@ -78,58 +63,51 @@
       cursor: pointer;
       transition: background 0.3s, box-shadow 0.3s;
     }
-
     button:hover {
       background: var(--button-hover);
       box-shadow: 0 0 10px rgba(255, 255, 255, 0.6);
     }
-
     #status {
       text-align: center;
       font-weight: bold;
       margin-bottom: 1rem;
     }
-
     .sound strong {
       display: block;
       margin-bottom: 0.5rem;
       font-size: 1.1rem;
     }
-
     .sound audio {
       width: 100%;
-      outline: none;
       border-radius: 8px;
+      outline: none;
     }
   </style>
 </head>
 <body>
   <div class="container">
     <h1>BustAnEar™ Soundboard</h1>
-
     <form id="uploadForm">
       <input type="text" id="soundName" placeholder="Enter sound name…" required />
       <input type="file" id="soundFile" accept="audio/*" required />
       <button type="submit">Upload Sound</button>
     </form>
-
     <div id="status"></div>
     <hr />
-
     <h2>Available Sounds</h2>
     <div id="soundList"></div>
   </div>
 
-  <!-- 1) Load Supabase client library first -->
+  <!-- Load Supabase client first -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
 
-  <!-- 2) Then initialize and run your app logic -->
+  <!-- App logic -->
   <script>
     const SUPABASE_URL = 'https://zkmskttucnxogvpolpym.supabase.co';
     const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InprbXNrdHR1Y254b2d2cG9scHltIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQzNTM5ODEsImV4cCI6MjA2OTkyOTk4MX0.873d6wi886RQsznB8oYDEvLijfhPMKvOnSM3hoN4OqQ';
     const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-    // handle uploads
+    // Upload handler
     document.getElementById('uploadForm').addEventListener('submit', async e => {
       e.preventDefault();
       const name = document.getElementById('soundName').value.trim();
@@ -137,23 +115,22 @@
       const folder = `online/${name}`;
       const filePath = `${folder}/audio.mp3`;
       const statusEl = document.getElementById('status');
-
       statusEl.textContent = 'Uploading…';
 
-      const { error: upErr } = await supabase
+      // 1) Upload file
+      let { error: upErr } = await supabase
         .storage.from('sounds')
         .upload(filePath, file, { upsert: true });
-
       if (upErr) {
         statusEl.textContent = 'Upload failed.';
         console.error(upErr);
         return;
       }
 
-      const { error: dbErr } = await supabase
+      // 2) Insert metadata
+      let { error: dbErr } = await supabase
         .from('audio_files')
         .insert([{ name, path: folder }]);
-
       if (dbErr) {
         statusEl.textContent = 'Metadata save failed.';
         console.error(dbErr);
@@ -164,13 +141,12 @@
       loadSounds();
     });
 
-    // load and render sounds
+    // Load & display sounds
     async function loadSounds() {
-      const { data, error } = await supabase
+      let { data, error } = await supabase
         .from('audio_files')
         .select('*')
         .order('created_at', { ascending: false });
-
       if (error) {
         console.error(error);
         return;
@@ -190,7 +166,7 @@
       });
     }
 
-    // initial fetch
+    // Initial fetch
     loadSounds();
   </script>
 </body>
