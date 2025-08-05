@@ -78,6 +78,12 @@
         0 6px 10px rgba(0, 0, 0, 0.3);
       overflow: hidden;
       transition: transform 0.1s ease, box-shadow 0.1s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 5px;
+      line-height: 1.2;
     }
 
     /* Press-in effect */
@@ -109,13 +115,18 @@
       outline: 2px solid rgba(255, 255, 255, 0.7);
       outline-offset: 4px;
     }
+
+    /* Adjust font-size for longer labels */
+    .sound-button[data-sound="spongebob.mp3"],
+    .sound-button[data-sound="emotionaldamage.mp3"] {
+      font-size: 0.7rem;
+    }
   </style>
 </head>
 <body>
   <div class="soundboard-container">
     <h1>Soundboard</h1>
     <div class="buttons">
-      <!-- 24 buttons; just update data-sound -->
       <button class="sound-button" data-sound="bruh.mp3">bruh</button>
       <button class="sound-button" data-sound="wtf.mp3">i got no rizz</button>
       <button class="sound-button" data-sound="soulmate.mp3">wedding piano thing</button>
@@ -141,13 +152,15 @@
       <button class="sound-button" data-sound="burgerking.mp3">burger king wtf</button>
       <button class="sound-button" data-sound="bababoi.mp3">bababoi</button>
     </div>
+
+    <footer style="margin-top: 40px; text-align: center; font-size: 1rem; color: white;">
+      <div>©2025 BustAnEar LLC. All rights reserved.</div>
+      <div style="font-size: 0.8rem; color: #ff4d4d; margin-top: 8px;">
+        By using this soundboard, you agree to our terms and conditions.
+      </div>
+    </footer>
   </div>
-  <footer style="margin-top: 40px; text-align: center; font-size: 1rem; color: white;">
-    <div>©2025 BustAnEar LLC. All rights reserved.</div>
-    <div style="font-size: 0.8rem; color: #ff4d4d; margin-top: 8px;">
-      By using this soundboard, you agree to our terms and conditions.
-    </div>
-  </footer>
+
   <audio id="player"></audio>
   <script>
     const player = document.getElementById('player');
