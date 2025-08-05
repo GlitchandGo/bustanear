@@ -2,240 +2,169 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>BustAnEar Soundboard</title>
-
-  <!-- Bubblegum Sans font -->
-  <link
-    href="https://fonts.googleapis.com/css2?family=Bubblegum+Sans&display=swap"
-    rel="stylesheet"
-  />
-
-  <!-- Supabase JS -->
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
-
+  <title>BustAnEar™ Soundboard</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <style>
-    /* Animated full-page gradient */
-    @keyframes gradientShift {
-      0%   { background-position:   0% 50%; }
-      50%  { background-position: 100% 50%; }
-      100% { background-position:   0% 50%; }
+    :root {
+      --primary-gradient: linear-gradient(135deg, #f093fb, #f5576c);
+      --glass-bg: rgba(255, 255, 255, 0.1);
+      --button-hover: rgba(255, 255, 255, 0.25);
+      --text-color: #ffffff;
+    }
+
+    * {
+      box-sizing: border-box;
     }
 
     body {
       margin: 0;
-      padding: 40px 20px;
-      font-family: 'Bubblegum Sans', cursive;
-      background: linear-gradient(
-        270deg,
-        #87ceeb,
-        #1e90ff,
-        #4169e1
-      );
-      background-size: 600% 600%;
-      animation: gradientShift 20s ease infinite;
+      min-height: 100vh;
+      background: var(--primary-gradient);
+      color: var(--text-color);
+      font-family: 'Segoe UI', Tahoma, sans-serif;
       display: flex;
       justify-content: center;
-      align-items: center;
-      min-height: 100vh;
+      padding: 2rem 1rem;
     }
 
-    /* Frosted-glass panel */
-    .soundboard-container {
-      background: rgba(255, 255, 255, 0.15);
-      backdrop-filter: blur(12px);
-      border-radius: 20px;
-      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
-      padding: 40px 20px;
-      max-width: 700px;
+    .container {
       width: 100%;
+      max-width: 700px;
+    }
+
+    h1, h2 {
       text-align: center;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      margin-bottom: 1rem;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4);
     }
 
-    h1 {
-      margin: 0 0 30px;
-      font-size: 3rem;
-      color: #ffffff;
-      text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.4);
-    }
-
-    h2 {
-      margin: 30px 0 20px;
-      font-size: 2rem;
-      color: #ffffff;
-      text-shadow: 1px 1px 6px rgba(0, 0, 0, 0.3);
-    }
-
-    /* Upload form styling */
-    .soundboard-form {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 12px;
-      margin-bottom: 20px;
-    }
-
-    .soundboard-form input[type="text"],
-    .soundboard-form input[type="file"] {
-      width: 80%;
-      padding: 10px;
-      border: none;
+    form, .sound {
+      background: var(--glass-bg);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.3);
       border-radius: 12px;
-      font-family: 'Bubblegum Sans', cursive;
+      padding: 1rem;
+      margin-bottom: 1.5rem;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    }
+
+    input[type="text"],
+    input[type="file"] {
+      width: 100%;
+      margin-bottom: 0.75rem;
+      padding: 0.75rem;
+      background: rgba(255, 255, 255, 0.2);
+      border: none;
+      border-radius: 8px;
+      color: var(--text-color);
+      outline: none;
       font-size: 1rem;
     }
 
-    .upload-button {
-      padding: 10px 24px;
-      background: radial-gradient(circle at 30% 30%, #e74c3c, #c0392b);
-      border: none;
-      border-radius: 50px;
-      color: #fff;
-      font-family: 'Bubblegum Sans', cursive;
+    input::placeholder {
+      color: rgba(255, 255, 255, 0.7);
+    }
+
+    button {
+      width: 100%;
+      padding: 0.75rem;
       font-size: 1rem;
+      color: var(--text-color);
+      background: transparent;
+      border: 2px solid #fff;
+      border-radius: 8px;
       cursor: pointer;
-      box-shadow:
-        0 4px #932b26,
-        0 6px 10px rgba(0, 0, 0, 0.3);
-      transition: transform 0.1s ease, box-shadow 0.1s ease;
+      transition: background 0.3s, box-shadow 0.3s;
     }
 
-    .upload-button:active {
-      transform: translateY(4px);
-      box-shadow:
-        0 2px #932b26,
-        0 4px 6px rgba(0, 0, 0, 0.3);
+    button:hover {
+      background: var(--button-hover);
+      box-shadow: 0 0 10px rgba(255, 255, 255, 0.6);
     }
 
-    /* Status message */
     #status {
-      color: #ffffff;
-      font-family: 'Bubblegum Sans', cursive;
-      margin-bottom: 16px;
-      min-height: 1.2em;
-    }
-
-    /* Available sounds list */
-    .sound {
-      background: rgba(255, 255, 255, 0.12);
-      backdrop-filter: blur(8px);
-      border-radius: 12px;
-      padding: 12px;
-      margin-bottom: 12px;
-      text-align: left;
+      text-align: center;
+      font-weight: bold;
+      margin-bottom: 1rem;
     }
 
     .sound strong {
       display: block;
-      margin-bottom: 8px;
-      color: #ffffff;
+      margin-bottom: 0.5rem;
       font-size: 1.1rem;
     }
 
     .sound audio {
       width: 100%;
       outline: none;
-    }
-
-    /* Footer */
-    footer {
-      margin-top: 40px;
-      text-align: center;
-      font-size: 1rem;
-      color: white;
-    }
-
-    footer .legal {
-      font-size: 0.8rem;
-      color: #ff4d4d;
-      margin-top: 8px;
+      border-radius: 8px;
     }
   </style>
 </head>
-
 <body>
-  <div class="soundboard-container">
-    <h1>BustAnEar Soundboard</h1>
+  <div class="container">
+    <h1>BustAnEar™ Soundboard</h1>
 
-    <form id="uploadForm" class="soundboard-form">
-      <input
-        type="text"
-        id="soundName"
-        placeholder="Sound name"
-        required
-      />
-      <input
-        type="file"
-        id="soundFile"
-        accept="audio/*"
-        required
-      />
-      <button type="submit" class="upload-button">
-        Upload
-      </button>
+    <form id="uploadForm">
+      <input type="text" id="soundName" placeholder="Enter sound name…" required />
+      <input type="file" id="soundFile" accept="audio/*" required />
+      <button type="submit">Upload Sound</button>
     </form>
 
     <div id="status"></div>
+    <hr />
 
     <h2>Available Sounds</h2>
     <div id="soundList"></div>
-
-    <footer>
-      <div>©2025 BustAnEar LLC. All rights reserved.</div>
-      <div class="legal">
-        By using this soundboard, you agree to our terms and conditions.
-      </div>
-    </footer>
   </div>
 
+  <!-- 1) Load Supabase client library first -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+
+  <!-- 2) Then initialize and run your app logic -->
   <script>
-    // 1. Initialize Supabase client
     const SUPABASE_URL = 'https://zkmskttucnxogvpolpym.supabase.co';
-    const SUPABASE_ANON_KEY =
-      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InprbXNrdHR1Y254b2d2cG9scHltIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQzNTM5ODEsImV4cCI6MjA2OTkyOTk4MX0.873d6wi886RQsznB8oYDEvLijfhPMKvOnSM3hoN4OqQ';
+    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InprbXNrdHR1Y254b2d2cG9scHltIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQzNTM5ODEsImV4cCI6MjA2OTkyOTk4MX0.873d6wi886RQsznB8oYDEvLijfhPMKvOnSM3hoN4OqQ';
     const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-    const statusDiv = document.getElementById('status');
+    // handle uploads
+    document.getElementById('uploadForm').addEventListener('submit', async e => {
+      e.preventDefault();
+      const name = document.getElementById('soundName').value.trim();
+      const file = document.getElementById('soundFile').files[0];
+      const folder = `online/${name}`;
+      const filePath = `${folder}/audio.mp3`;
+      const statusEl = document.getElementById('status');
 
-    // 2. Handle uploads
-    document
-      .getElementById('uploadForm')
-      .addEventListener('submit', async (e) => {
-        e.preventDefault();
-        const name = document.getElementById('soundName').value.trim();
-        const file = document.getElementById('soundFile').files[0];
-        const folder = `online/${name}`;
-        const filePath = `${folder}/audio.mp3`;
+      statusEl.textContent = 'Uploading…';
 
-        statusDiv.textContent = 'Uploading…';
+      const { error: upErr } = await supabase
+        .storage.from('sounds')
+        .upload(filePath, file, { upsert: true });
 
-        // Upload to storage
-        const { error: upErr } = await supabase
-          .storage.from('sounds')
-          .upload(filePath, file, { upsert: true });
+      if (upErr) {
+        statusEl.textContent = 'Upload failed.';
+        console.error(upErr);
+        return;
+      }
 
-        if (upErr) {
-          statusDiv.textContent = 'Upload failed.';
-          console.error(upErr);
-          return;
-        }
+      const { error: dbErr } = await supabase
+        .from('audio_files')
+        .insert([{ name, path: folder }]);
 
-        // Insert metadata row
-        const { error: dbErr } = await supabase
-          .from('audio_files')
-          .insert([{ name, path: folder }]);
+      if (dbErr) {
+        statusEl.textContent = 'Metadata save failed.';
+        console.error(dbErr);
+        return;
+      }
 
-        if (dbErr) {
-          statusDiv.textContent = 'Metadata insert failed.';
-          console.error(dbErr);
-          return;
-        }
+      statusEl.textContent = 'Upload successful!';
+      loadSounds();
+    });
 
-        statusDiv.textContent = 'Upload successful!';
-        loadSounds();
-      });
-
-    // 3. Load & display all sounds
+    // load and render sounds
     async function loadSounds() {
       const { data, error } = await supabase
         .from('audio_files')
@@ -249,8 +178,7 @@
 
       const container = document.getElementById('soundList');
       container.innerHTML = '';
-
-      data.forEach((item) => {
+      data.forEach(item => {
         const url = `${SUPABASE_URL}/storage/v1/object/public/sounds/${item.path}/audio.mp3`;
         const div = document.createElement('div');
         div.className = 'sound';
@@ -262,7 +190,7 @@
       });
     }
 
-    // Initial fetch
+    // initial fetch
     loadSounds();
   </script>
 </body>
