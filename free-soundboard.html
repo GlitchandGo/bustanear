@@ -15,17 +15,11 @@
       50%  { background-position: 100% 50%; }
       100% { background-position:   0% 50%; }
     }
-
     body {
       margin: 0;
       padding: 40px 20px;
       font-family: 'Bubblegum Sans', cursive;
-      background: linear-gradient(
-        270deg,
-        #87ceeb,
-        #1e90ff,
-        #4169e1
-      );
+      background: linear-gradient(270deg, #87ceeb, #1e90ff, #4169e1);
       background-size: 600% 600%;
       animation: gradientShift 20s ease infinite;
       display: flex;
@@ -36,6 +30,7 @@
 
     /* Frosted-glass panel */
     .soundboard-container {
+      position: relative;
       background: rgba(255, 255, 255, 0.15);
       backdrop-filter: blur(12px);
       border-radius: 20px;
@@ -46,12 +41,71 @@
       text-align: center;
     }
 
+    /* Upload icon button */
+    .upload-button {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      width: 32px;
+      height: 32px;
+      color: white;
+      cursor: pointer;
+    }
+    .upload-button svg {
+      width: 100%;
+      height: 100%;
+      fill: white;
+      transition: fill 0.2s ease;
+    }
+    .upload-button:hover svg {
+      fill: #ffcc33;
+    }
+
     /* Title */
     h1 {
       margin: 0 0 30px;
       font-size: 3.5rem;
       color: #ffffff;
       text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.4);
+    }
+
+    /* Volume control */
+    .volume-control {
+      margin-bottom: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      color: #fff;
+      font-size: 1rem;
+    }
+    .volume-control input[type=range] {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 220px;
+      height: 12px;
+      background: linear-gradient(90deg, #ffb347, #ffcc33);
+      border-radius: 6px;
+      box-shadow: inset 0 2px 5px rgba(0,0,0,0.3);
+      outline: none;
+    }
+    .volume-control input[type=range]::-webkit-slider-thumb,
+    .volume-control input[type=range]::-moz-range-thumb {
+      width: 24px;
+      height: 24px;
+      background: #ff6600;
+      border: 2px solid #ffa500;
+      border-radius: 50%;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.5);
+      cursor: pointer;
+    }
+    .volume-control input[type=number] {
+      width: 70px;
+      padding: 4px 6px;
+      border: 1px solid #ffa500;
+      border-radius: 4px;
+      background: rgba(255,255,255,0.8);
+      text-align: right;
     }
 
     /* Button grid */
@@ -85,14 +139,12 @@
       padding: 5px;
       line-height: 1.2;
     }
-
     .sound-button:active {
       transform: translateY(4px);
       box-shadow:
         0 2px #932b26,
-        0 4px  6px rgba(0, 0, 0, 0.3);
+        0 4px 6px rgba(0, 0, 0, 0.3);
     }
-
     .sound-button::before {
       content: '';
       position: absolute;
@@ -104,90 +156,55 @@
       transform: rotate(45deg) translate(-100%, -100%);
       transition: transform 0.6s ease;
     }
-
     .sound-button:hover::before {
       transform: rotate(45deg) translate(0, 0);
     }
-
     .sound-button:focus {
       outline: 2px solid rgba(255, 255, 255, 0.7);
       outline-offset: 4px;
     }
-
-    /* Longer labels */
     .sound-button[data-sound="spongebob.mp3"],
     .sound-button[data-sound="emotionaldamage.mp3"] {
       font-size: 0.7rem;
     }
 
-    /* Volume control */
-    .volume-control {
-      margin: 30px 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 12px;
-      color: #fff;
+    /* Footer */
+    footer {
+      margin-top: 40px;
       font-size: 1rem;
+      color: white;
     }
-
-    .volume-control input[type=range] {
-      -webkit-appearance: none;
-      appearance: none;
-      width: 220px;
-      height: 12px;
-      background: linear-gradient(90deg, #ffb347, #ffcc33);
-      border-radius: 6px;
-      box-shadow: inset 0 2px 5px rgba(0,0,0,0.3);
-      outline: none;
-    }
-
-    .volume-control input[type=range]::-webkit-slider-thumb {
-      -webkit-appearance: none;
-      width: 24px;
-      height: 24px;
-      background: #ff6600;
-      border: 2px solid #ffa500;
-      border-radius: 50%;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.5);
-      cursor: pointer;
-    }
-
-    .volume-control input[type=range]::-moz-range-thumb {
-      width: 24px;
-      height: 24px;
-      background: #ff6600;
-      border: 2px solid #ffa500;
-      border-radius: 50%;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.5);
-      cursor: pointer;
-    }
-
-    .volume-control input[type=number] {
-      width: 70px;
-      padding: 4px 6px;
-      border: 1px solid #ffa500;
-      border-radius: 4px;
-      background: rgba(255,255,255,0.8);
-      text-align: right;
+    footer div + div {
+      font-size: 0.8rem;
+      color: #ff4d4d;
+      margin-top: 8px;
     }
   </style>
 </head>
 <body>
   <div class="soundboard-container">
+    <!-- Upload page link -->
+    <a href="upload.html" class="upload-button" title="Upload Sound">
+      <svg viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+        <path d="M5 10l5-5 5 5H11v4H9v-4H5z M3 16h14v-2H3v2z"/>
+      </svg>
+    </a>
+
     <h1>Soundboard</h1>
-     <div class="volume-control">
+
+    <div class="volume-control">
       <label for="volume-slider">Volume</label>
       <input type="range" id="volume-slider" min="0" max="100" value="100" />
       <input type="number" id="volume-input" min="0" max="1000" value="100" />%
     </div>
 
     <div class="buttons">
+      <!-- 32 built-in sounds -->
       <button class="sound-button" data-sound="bruh.mp3">bruh</button>
       <button class="sound-button" data-sound="wtf.mp3">i got no rizz</button>
       <button class="sound-button" data-sound="soulmate.mp3">wedding piano thing</button>
       <button class="sound-button" data-sound="br_br_patapim.mp3">brainrot AAAA</button>
-      <button class="sound-button" data-sound="hellnaw.mp3">oh ***** no</button>
+      <button class="sound-button" data-sound="hellnaw.mp3">oh HELL no</button>
       <button class="sound-button" data-sound="yippee.mp3">yippee</button>
       <button class="sound-button" data-sound="cheer.mp3">kids cheer</button>
       <button class="sound-button" data-sound="heartbreak.mp3">womp womp</button>
@@ -198,7 +215,7 @@
       <button class="sound-button" data-sound="kafutilaugh.mp3">baby laugh</button>
       <button class="sound-button" data-sound="gotye.mp3">galaxy brain🗣️🧠</button>
       <button class="sound-button" data-sound="moan.mp3">moan</button>
-      <button class="sound-button" data-sound="*****.mp3">*****</button>
+      <button class="sound-button" data-sound="fart.mp3">fart</button>
       <button class="sound-button" data-sound="uwu.mp3">uwu</button>
       <button class="sound-button" data-sound="spongebob.mp3">spongebob</button>
       <button class="sound-button" data-sound="taco.mp3">taco bell</button>
@@ -209,7 +226,7 @@
       <button class="sound-button" data-sound="bababoi.mp3">bababoi</button>
       <button class="sound-button" data-sound="caseohburgerking.mp3">caseoh at burger king</button>
       <button class="sound-button" data-sound="eardrumwhopper.mp3">burger king LOUD</button>
-      <button class="sound-button" data-sound="*****.mp3">*****</button>
+      <button class="sound-button" data-sound="gay.mp3">gay</button>
       <button class="sound-button" data-sound="scream.mp3">scream</button>
       <button class="sound-button" data-sound="samsung.mp3">samsung</button>
       <button class="sound-button" data-sound="krustykrab.mp3">krusty krab</button>
@@ -217,52 +234,67 @@
       <button class="sound-button" data-sound="uwuburp.mp3">uwu burp</button>
     </div>
 
-    <footer style="margin-top: 40px; text-align: center; font-size: 1rem; color: white;">
+    <footer>
       <div>©2025 BustAnEar LLC. All rights reserved.</div>
-      <div style="font-size: 0.8rem; color: #ff4d4d; margin-top: 8px;">
-        By using this soundboard, you agree to our terms and conditions.
-      </div>
+      <div>By using this soundboard, you agree to our terms and conditions.</div>
     </footer>
   </div>
 
   <audio id="player" preload="auto"></audio>
   <script>
-    const player = document.getElementById('player');
-    const slider = document.getElementById('volume-slider');
-    const volInput = document.getElementById('volume-input');
+    // Elements
+    const player    = document.getElementById('player');
+    const slider    = document.getElementById('volume-slider');
+    const volInput  = document.getElementById('volume-input');
+    const container = document.querySelector('.buttons');
 
-    // Web Audio API setup
+    // Web Audio API
     const context = new (window.AudioContext || window.webkitAudioContext)();
-    const source = context.createMediaElementSource(player);
-    const gainNode = context.createGain();
-    gainNode.gain.value = 1; // 100%
-    source.connect(gainNode).connect(context.destination);
+    const source  = context.createMediaElementSource(player);
+    const gain    = context.createGain();
+    gain.gain.value = 1;
+    source.connect(gain).connect(context.destination);
 
-    // Slider → Input → Gain
-    slider.addEventListener('input', () => {
-      const pct = parseInt(slider.value, 10);
-      volInput.value = pct;
-      gainNode.gain.value = pct / 100;
-    });
-
-    // Input → Slider (capped at 100) → Gain (up to 1000%)
-    volInput.addEventListener('input', () => {
-      let val = parseFloat(volInput.value);
-      if (isNaN(val) || val < 0) val = 0;
-      if (val > 1000) val = 1000;
-      volInput.value = val;
-      gainNode.gain.value = val / 100;
-      slider.value = val > 100 ? 100 : val;
-    });
-
-    // Play sounds on button click
-    document.querySelectorAll('.sound-button').forEach(btn => {
+    // Bind click handler for any button
+    function bindSoundButton(btn) {
       btn.addEventListener('click', () => {
-        context.resume(); 
+        context.resume();
         player.pause();
         player.currentTime = 0;
         player.src = btn.dataset.sound;
         player.play();
+      });
+    }
+
+    // Volume control ↔ gain
+    slider.addEventListener('input', () => {
+      const pct = parseInt(slider.value, 10);
+      volInput.value = pct;
+      gain.gain.value = pct / 100;
+    });
+    volInput.addEventListener('input', () => {
+      let v = parseFloat(volInput.value);
+      if (isNaN(v) || v < 0) v = 0;
+      if (v > 1000) v = 1000;
+      volInput.value = v;
+      gain.gain.value  = v / 100;
+      slider.value     = v > 100 ? 100 : v;
+    });
+
+    // On load
+    document.addEventListener('DOMContentLoaded', () => {
+      // Bind existing 32
+      document.querySelectorAll('.sound-button').forEach(bindSoundButton);
+
+      // Load custom from localStorage
+      const custom = JSON.parse(localStorage.getItem('customSounds') || '[]');
+      custom.forEach(item => {
+        const btn = document.createElement('button');
+        btn.className         = 'sound-button';
+        btn.textContent       = item.label;
+        btn.dataset.sound     = item.dataUrl;
+        container.appendChild(btn);
+        bindSoundButton(btn);
       });
     });
   </script>
