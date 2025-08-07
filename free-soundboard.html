@@ -168,31 +168,16 @@
       font-size: 0.7rem;
     }
 
-    /* Footer */
-    footer {
-      margin-top: 40px;
-      font-size: 1rem;
-      color: white;
-    }
-    footer div + div {
-      font-size: 0.8rem;
-      color: #ff4d4d;
-      margin-top: 8px;
-    }
-
-  /* ——— Mode Bar Fixed at Bottom ——— */
+    /* Mode controls between buttons and footer */
     .mode-bar {
-      position: fixed;
-      bottom: 20px;
-      left: 50%;
-      transform: translateX(-50%);
+      margin: 30px 0 20px;
       display: flex;
       gap: 12px;
+      justify-content: center;
       background: rgba(0, 0, 0, 0.5);
       padding: 10px 20px;
       border-radius: 12px;
       backdrop-filter: blur(6px);
-      z-index: 100;
     }
     .mode-bar button {
       font-family: 'Bubblegum Sans', cursive;
@@ -213,6 +198,18 @@
       color: #000;
       box-shadow: 0 0 8px #ffcc33;
     }
+
+    /* Footer */
+    footer {
+      margin-top: 40px;
+      font-size: 1rem;
+      color: white;
+    }
+    footer div + div {
+      font-size: 0.8rem;
+      color: #ff4d4d;
+      margin-top: 8px;
+    }
   </style>
 </head>
 <body>
@@ -232,7 +229,6 @@
       <input type="number" id="volume-input" min="0" max="1000" value="100" />%
     </div>
 
-    <!-- ——— Drop in your 32 sound-button elements here ——— -->
     <div class="buttons">
       <button class="sound-button" data-sound="bruh.mp3">bruh</button>
       <button class="sound-button" data-sound="wtf.mp3">i got no rizz</button>
@@ -280,17 +276,17 @@
       <button class="sound-button" data-sound="oof.mp3">oof</button>
     </div>
 
+    <!-- Mode controls between buttons and footer -->
+    <div class="mode-bar">
+      <button id="chaos-btn">Chaos (C)</button>
+      <button id="loop-btn">Loop (L)</button>
+      <button id="stop-btn">Stop (S)</button>
+    </div>
+
     <footer>
       <div>©2025 BustAnEar LLC. All rights reserved.</div>
       <div>By using this soundboard, you agree to our terms and conditions.</div>
     </footer>
-  </div>
-
-  <!-- Bottom screen controls -->
-  <div class="mode-bar">
-    <button id="chaos-btn">Chaos (C)</button>
-    <button id="loop-btn">Loop (L)</button>
-    <button id="stop-btn">Stop (S)</button>
   </div>
 
   <audio id="player" preload="auto" style="display:none"></audio>
