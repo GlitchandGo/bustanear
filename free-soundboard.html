@@ -180,16 +180,19 @@
       margin-top: 8px;
     }
 
-    /* ——— NEW: Mode Bar (between buttons and footer) ——— */
+  /* ——— Mode Bar Fixed at Bottom ——— */
     .mode-bar {
-      margin: 30px 0 20px;
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
       display: flex;
       gap: 12px;
-      justify-content: center;
       background: rgba(0, 0, 0, 0.5);
       padding: 10px 20px;
       border-radius: 12px;
       backdrop-filter: blur(6px);
+      z-index: 100;
     }
     .mode-bar button {
       font-family: 'Bubblegum Sans', cursive;
