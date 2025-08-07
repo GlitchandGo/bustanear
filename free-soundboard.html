@@ -179,6 +179,40 @@
       color: #ff4d4d;
       margin-top: 8px;
     }
+
+    /* ——— NEW: Bottom Mode Bar ——— */
+    .mode-bar {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 12px;
+      background: rgba(0, 0, 0, 0.5);
+      padding: 10px 20px;
+      border-radius: 12px;
+      backdrop-filter: blur(6px);
+      z-index: 100;
+    }
+    .mode-bar button {
+      font-family: 'Bubblegum Sans', cursive;
+      background: #ff6600;
+      color: #fff;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: background 0.2s, transform 0.1s;
+    }
+    .mode-bar button:active {
+      transform: scale(0.95);
+    }
+    .mode-bar button.active {
+      background: #ffcc33;
+      color: #000;
+      box-shadow: 0 0 8px #ffcc33;
+    }
   </style>
 </head>
 <body>
@@ -198,8 +232,8 @@
       <input type="number" id="volume-input" min="0" max="1000" value="100" />%
     </div>
 
+    <!-- ——— Drop in your 32 sound-button elements here ——— -->
     <div class="buttons">
-      <!-- 32 built-in sounds -->
       <button class="sound-button" data-sound="bruh.mp3">bruh</button>
       <button class="sound-button" data-sound="wtf.mp3">i got no rizz</button>
       <button class="sound-button" data-sound="soulmate.mp3">wedding piano thing</button>
@@ -252,63 +286,113 @@
     </footer>
   </div>
 
-  <audio id="player" preload="auto"></audio>
+  <!-- Bottom screen controls -->
+  <div class="mode-bar">
+    <button id="chaos-btn">Chaos (C)</button>
+    <button id="loop-btn">Loop (L)</button>
+    <button id="stop-btn">Stop (S)</button>
+  </div>
+
+  <audio id="player" preload="auto" style="display:none"></audio>
   <script>
     // Elements
-    const player    = document.getElementById('player');
-    const slider    = document.getElementById('volume-slider');
-    const volInput  = document.getElementById('volume-input');
-    const container = document.querySelector('.buttons');
+    const slider   = document.getElementById('volume-slider');
+    const volInput = document.getElementById('volume-input');
+    const container= document.querySelector('.buttons');
+    const chaosBtn = document.getElementById('chaos-btn');
+    const loopBtn  = document.getElementById('loop-btn');
+    const stopBtn  = document.getElementById('stop-btn');
 
-    // Web Audio API
-    const context = new (window.AudioContext || window.webkitAudioContext)();
-    const source  = context.createMediaElementSource(player);
-    const gain    = context.createGain();
-    gain.gain.value = 1;
-    source.connect(gain).connect(context.destination);
+    // AudioContext & Gain for volume (0–1000%)
+    const context = new (window.AudioContext||window.webkitAudioContext)();
+    const gainNode = context.createGain();
+    gainNode.gain.value = 1; 
+    gainNode.connect(context.destination);
 
-    // Bind click handler for any button
-    function bindSoundButton(btn) {
-      btn.addEventListener('click', () => {
-        context.resume();
-        player.pause();
-        player.currentTime = 0;
-        player.src = btn.dataset.sound;
-        player.play();
-      });
+    // State
+    let chaosMode = false;
+    let loopMode  = false;
+    let playing   = []; // array of HTMLAudioElements
+
+    // Core playback logic
+    function playSound(src) {
+      context.resume();
+      if (!chaosMode) stopAll();
+      const audio = new Audio(src);
+      audio.loop = loopMode;
+      // route through gainNode
+      const srcNode = context.createMediaElementSource(audio);
+      srcNode.connect(gainNode);
+      audio.play();
+      playing.push(audio);
+    }
+
+    function stopAll() {
+      playing.forEach(a => a.pause());
+      playing = [];
+    }
+
+    function toggleChaos() {
+      chaosMode = !chaosMode;
+      chaosBtn.classList.toggle('active', chaosMode);
+    }
+
+    function toggleLoop() {
+      loopMode = !loopMode;
+      loopBtn.classList.toggle('active', loopMode);
     }
 
     // Volume control ↔ gain
     slider.addEventListener('input', () => {
-      const pct = parseInt(slider.value, 10);
+      const pct = parseInt(slider.value,10);
       volInput.value = pct;
-      gain.gain.value = pct / 100;
+      gainNode.gain.value = pct/100;
     });
     volInput.addEventListener('input', () => {
       let v = parseFloat(volInput.value);
-      if (isNaN(v) || v < 0) v = 0;
-      if (v > 1000) v = 1000;
+      if (isNaN(v)||v<0) v=0;
+      if (v>1000) v=1000;
       volInput.value = v;
-      gain.gain.value  = v / 100;
-      slider.value     = v > 100 ? 100 : v;
+      gainNode.gain.value = v/100;
+      slider.value = v>100?100:v;
     });
 
-    // On load
+    // Bind existing & custom buttons
+    function bindSoundButton(btn) {
+      btn.addEventListener('click', () => {
+        const src = btn.dataset.sound;
+        playSound(src);
+      });
+    }
+
     document.addEventListener('DOMContentLoaded', () => {
-      // Bind existing 32
+      // bind your 32
       document.querySelectorAll('.sound-button').forEach(bindSoundButton);
 
-      // Load custom from localStorage
-      const custom = JSON.parse(localStorage.getItem('customSounds') || '[]');
+      // load user-uploaded
+      const custom = JSON.parse(localStorage.getItem('customSounds')||'[]');
       custom.forEach(item => {
         const btn = document.createElement('button');
-        btn.className         = 'sound-button';
-        btn.textContent       = item.label;
-        btn.dataset.sound     = item.dataUrl;
+        btn.className   = 'sound-button';
+        btn.textContent = item.label;
+        btn.dataset.sound = item.dataUrl;
         container.appendChild(btn);
         bindSoundButton(btn);
       });
     });
+
+    // Keyboard shortcuts
+    document.addEventListener('keydown', e => {
+      const k = e.key.toLowerCase();
+      if (k==='c') toggleChaos();
+      if (k==='l') toggleLoop();
+      if (k==='s') stopAll();
+    });
+
+    // Mode-bar buttons
+    chaosBtn.addEventListener('click', toggleChaos);
+    loopBtn.addEventListener('click', toggleLoop);
+    stopBtn.addEventListener('click', stopAll);
   </script>
 </body>
 </html>
