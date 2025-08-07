@@ -46,7 +46,7 @@
       text-align: center;
     }
 
-    /* Title with subtle text-shadow */
+    /* Title */
     h1 {
       margin: 0 0 30px;
       font-size: 3.5rem;
@@ -54,10 +54,10 @@
       text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.4);
     }
 
-    /* Grid layout */
+    /* Button grid */
     .buttons {
       display: grid;
-      grid-template-columns: repeat(4, 1fr);
+      grid-template-columns: repeat(auto-fit, minmax(70px, 1fr));
       gap: 20px;
       justify-items: center;
     }
@@ -86,7 +86,6 @@
       line-height: 1.2;
     }
 
-    /* Press-in effect */
     .sound-button:active {
       transform: translateY(4px);
       box-shadow:
@@ -94,7 +93,6 @@
         0 4px  6px rgba(0, 0, 0, 0.3);
     }
 
-    /* Gloss highlight swipe */
     .sound-button::before {
       content: '';
       position: absolute;
@@ -116,22 +114,80 @@
       outline-offset: 4px;
     }
 
-    /* Adjust font-size for longer labels */
+    /* Longer labels */
     .sound-button[data-sound="spongebob.mp3"],
     .sound-button[data-sound="emotionaldamage.mp3"] {
       font-size: 0.7rem;
+    }
+
+    /* Volume control */
+    .volume-control {
+      margin: 30px 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      color: #fff;
+      font-size: 1rem;
+    }
+
+    .volume-control input[type=range] {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 220px;
+      height: 12px;
+      background: linear-gradient(90deg, #ffb347, #ffcc33);
+      border-radius: 6px;
+      box-shadow: inset 0 2px 5px rgba(0,0,0,0.3);
+      outline: none;
+    }
+
+    .volume-control input[type=range]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 24px;
+      height: 24px;
+      background: #ff6600;
+      border: 2px solid #ffa500;
+      border-radius: 50%;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.5);
+      cursor: pointer;
+    }
+
+    .volume-control input[type=range]::-moz-range-thumb {
+      width: 24px;
+      height: 24px;
+      background: #ff6600;
+      border: 2px solid #ffa500;
+      border-radius: 50%;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.5);
+      cursor: pointer;
+    }
+
+    .volume-control input[type=number] {
+      width: 70px;
+      padding: 4px 6px;
+      border: 1px solid #ffa500;
+      border-radius: 4px;
+      background: rgba(255,255,255,0.8);
+      text-align: right;
     }
   </style>
 </head>
 <body>
   <div class="soundboard-container">
     <h1>Soundboard</h1>
+     <div class="volume-control">
+      <label for="volume-slider">Volume</label>
+      <input type="range" id="volume-slider" min="0" max="100" value="100" />
+      <input type="number" id="volume-input" min="0" max="1000" value="100" />%
+    </div>
+
     <div class="buttons">
       <button class="sound-button" data-sound="bruh.mp3">bruh</button>
       <button class="sound-button" data-sound="wtf.mp3">i got no rizz</button>
       <button class="sound-button" data-sound="soulmate.mp3">wedding piano thing</button>
       <button class="sound-button" data-sound="br_br_patapim.mp3">brainrot AAAA</button>
-      <button class="sound-button" data-sound="hellnaw.mp3">oh HELL no</button>
+      <button class="sound-button" data-sound="hellnaw.mp3">oh ***** no</button>
       <button class="sound-button" data-sound="yippee.mp3">yippee</button>
       <button class="sound-button" data-sound="cheer.mp3">kids cheer</button>
       <button class="sound-button" data-sound="heartbreak.mp3">womp womp</button>
@@ -142,7 +198,7 @@
       <button class="sound-button" data-sound="kafutilaugh.mp3">baby laugh</button>
       <button class="sound-button" data-sound="gotye.mp3">galaxy brain🗣️🧠</button>
       <button class="sound-button" data-sound="moan.mp3">moan</button>
-      <button class="sound-button" data-sound="fart.mp3">fart</button>
+      <button class="sound-button" data-sound="*****.mp3">*****</button>
       <button class="sound-button" data-sound="uwu.mp3">uwu</button>
       <button class="sound-button" data-sound="spongebob.mp3">spongebob</button>
       <button class="sound-button" data-sound="taco.mp3">taco bell</button>
@@ -153,7 +209,7 @@
       <button class="sound-button" data-sound="bababoi.mp3">bababoi</button>
       <button class="sound-button" data-sound="caseohburgerking.mp3">caseoh at burger king</button>
       <button class="sound-button" data-sound="eardrumwhopper.mp3">burger king LOUD</button>
-      <button class="sound-button" data-sound="gay.mp3">gay</button>
+      <button class="sound-button" data-sound="*****.mp3">*****</button>
       <button class="sound-button" data-sound="scream.mp3">scream</button>
       <button class="sound-button" data-sound="samsung.mp3">samsung</button>
       <button class="sound-button" data-sound="krustykrab.mp3">krusty krab</button>
@@ -169,11 +225,40 @@
     </footer>
   </div>
 
-  <audio id="player"></audio>
+  <audio id="player" preload="auto"></audio>
   <script>
     const player = document.getElementById('player');
+    const slider = document.getElementById('volume-slider');
+    const volInput = document.getElementById('volume-input');
+
+    // Web Audio API setup
+    const context = new (window.AudioContext || window.webkitAudioContext)();
+    const source = context.createMediaElementSource(player);
+    const gainNode = context.createGain();
+    gainNode.gain.value = 1; // 100%
+    source.connect(gainNode).connect(context.destination);
+
+    // Slider → Input → Gain
+    slider.addEventListener('input', () => {
+      const pct = parseInt(slider.value, 10);
+      volInput.value = pct;
+      gainNode.gain.value = pct / 100;
+    });
+
+    // Input → Slider (capped at 100) → Gain (up to 1000%)
+    volInput.addEventListener('input', () => {
+      let val = parseFloat(volInput.value);
+      if (isNaN(val) || val < 0) val = 0;
+      if (val > 1000) val = 1000;
+      volInput.value = val;
+      gainNode.gain.value = val / 100;
+      slider.value = val > 100 ? 100 : val;
+    });
+
+    // Play sounds on button click
     document.querySelectorAll('.sound-button').forEach(btn => {
       btn.addEventListener('click', () => {
+        context.resume(); 
         player.pause();
         player.currentTime = 0;
         player.src = btn.dataset.sound;
