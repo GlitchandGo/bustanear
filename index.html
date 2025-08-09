@@ -61,6 +61,35 @@
       fill: #ffcc33;
     }
 
+    /* Background selector button */
+    .bg-button {
+      position: fixed;
+      top: 16px;
+      left: 16px;
+      z-index: 999;
+      background: rgba(255,255,255,0.15);
+      backdrop-filter: blur(8px);
+      border-radius: 12px;
+      padding: 6px 10px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      text-decoration: none;
+      color: #fff;
+      font-family: 'Bubblegum Sans', cursive;
+      font-size: 1rem;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+      border: 1px solid rgba(255,255,255,0.25);
+    }
+    .bg-button:hover {
+      background: rgba(255,255,255,0.22);
+    }
+    .bg-button svg {
+      width: 20px;
+      height: 20px;
+      fill: currentColor;
+    }
+
     /* Title */
     h1 {
       margin: 0 0 30px;
@@ -213,6 +242,14 @@
   </style>
 </head>
 <body>
+  <!-- Background Selector Button -->
+  <a href="background.html" class="bg-button" title="Change background">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M12 2C6.477 2 2 6.146 2 11c0 4.553 3.822 8 8.5 8 .338 0 .722-.03 1.1-.09a3.5 3.5 0 0 0 3.884-2.387l.33-1.03A3.001 3.001 0 0 1 19 13c0-2.059-1.387-4.014-3.36-5.18C14.364 4.905 13.328 2 12 2ZM7 10a1 1 0 1 1 0-2 1 1 0 0 1 0 2Zm4-2a1 1 0 1 1 0-2 1 1 0 0 1 0 2Zm4 2a1 1 0 1 1 0-2 1 1 0 0 1 0 2Zm-2 4a1 1 0 1 1 0-2 1 1 0 0 1 0 2Z"/>
+    </svg>
+    Background
+  </a>
+
   <div class="soundboard-container">
     <!-- Upload page link -->
     <a href="upload.html" class="upload-button" title="Upload Sound">
@@ -389,6 +426,26 @@
     chaosBtn.addEventListener('click', toggleChaos);
     loopBtn.addEventListener('click', toggleLoop);
     stopBtn.addEventListener('click', stopAll);
+
+    // Apply stored background on load
+    (function applyStoredBackground(){
+      try {
+        const bg = JSON.parse(localStorage.getItem('soundboardBackground') || 'null');
+        if(!bg) return;
+
+        const body = document.body;
+        if(bg.type === 'color'){
+          body.style.background = bg.value;
+          body.style.backgroundSize = 'cover';
+          body.style.animation = 'none'; // disable animated gradient
+        } else if(bg.type === 'image'){
+          body.style.background = `url('${bg.value}') center/cover no-repeat, #0f0f12`;
+          body.style.animation = 'none';
+        }
+      } catch (e) {
+        console.warn("Could not apply background:", e);
+      }
+    })();
   </script>
 </body>
 </html>
