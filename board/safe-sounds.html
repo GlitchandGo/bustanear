@@ -424,7 +424,7 @@
     // Bind existing & custom buttons
     function bindSoundButton(btn) {
       btn.addEventListener('click', () => {
-        const src = btn.dataset.sound;
+        const src = '/' + btn.dataset.sound;
         playSound(src);
       });
     }
