@@ -504,4 +504,14 @@
           body.style.background = bg.value;
           body.style.backgroundSize = 'cover';
           body.style.animation = 'none'; // disable animated gradient
-        } else if(bg.t
+        } else if(bg.type === 'image'){
+          body.style.background = `url('${bg.value}') center/cover no-repeat, #0f0f12`;
+          body.style.animation = 'none';
+        }
+      } catch (e) {
+        console.warn("Could not apply background:", e);
+      }
+    })();
+  </script>
+</body>
+</html>
