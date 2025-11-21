@@ -2,7 +2,7 @@
 
 _Last updated: November 21, 2025_
 
-Welcome to **BustAnEar**, a platform offering soundboards, a virtual piano, prank-website links, and a music/mp3 player. By accessing or using our services, you agree to comply with and be bound by the following Terms and Conditions. Please read them carefully.
+Welcome to **BustAnEar**. By accessing or using our services, you agree to comply with and be bound by the following Terms and Conditions. Please read them carefully.
 
 ---
 
@@ -16,7 +16,7 @@ BustAnEar provides:
 - Soundboards for entertainment purposes
 - A virtual piano for interactive play
 - Prank-website links intended for humor
-- A music/mp3 player for streaming and playback
+- A music player for streaming and playback
 
 These services are provided “as is” without any guarantees of reliability, accuracy, or suitability for any purpose.
 
@@ -34,7 +34,7 @@ BustAnEar and its creators are **not responsible** for:
 - Any harm, damage, or loss resulting from use of our services
 - Emotional distress, embarrassment, or reputational impact caused by prank links or soundboards
 - Technical issues, interruptions, or data loss
-- Any misuse of the virtual piano, prank links, or mp3 player
+- Any misuse of the virtual piano, prank links, or music player
 
 All use of BustAnEar is at your own risk.
 
